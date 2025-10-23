@@ -56,12 +56,18 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         'update' => 'admin.users.update',
         'destroy' => 'admin.users.destroy'
     ]);
+    Route::patch('users/{user}/reset-password', [App\Http\Controllers\Admin\UserController::class, 'resetPassword'])->name('admin.users.reset-password');
 });
 
 // Customer Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    
+    // GDPR Compliance
+    Route::get('/profile/export-data', [App\Http\Controllers\ProfileController::class, 'exportData'])->name('profile.export-data');
+    Route::delete('/profile/delete-account', [App\Http\Controllers\ProfileController::class, 'deleteAccount'])->name('profile.delete-account');
     
     // Shopping Cart
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
@@ -89,3 +95,8 @@ Route::get('/categories/{category}', [App\Http\Controllers\CategoryController::c
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// GDPR Policy Pages
+Route::get('/privacy-policy', [App\Http\Controllers\PolicyController::class, 'privacy'])->name('privacy-policy');
+Route::get('/terms-of-service', [App\Http\Controllers\PolicyController::class, 'terms'])->name('terms-of-service');
+Route::get('/cookie-policy', [App\Http\Controllers\PolicyController::class, 'cookies'])->name('cookie-policy');

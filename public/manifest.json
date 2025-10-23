@@ -1,0 +1,43 @@
+{
+  "name": "Duck Vintage - Vintage Clothing Store",
+  "short_name": "Duck Vintage",
+  "description": "Premium vintage clothing and accessories for the modern soul",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#FFD700",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/duck_fav.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/duck_logo_nav.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Browse Products",
+      "url": "/products",
+      "description": "View all vintage products"
+    },
+    {
+      "name": "My Orders",
+      "url": "/orders",
+      "description": "Track your orders"
+    },
+    {
+      "name": "Shopping Cart",
+      "url": "/cart",
+      "description": "View your cart"
+    }
+  ]
+}
+

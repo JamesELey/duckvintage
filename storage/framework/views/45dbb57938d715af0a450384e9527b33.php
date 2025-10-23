@@ -5,12 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title><?php echo e(config('app.name', 'Duck Vintage')); ?> - <?php echo $__env->yieldContent('title', 'Vintage Clothing Store'); ?></title>
+    <title><?php echo $__env->yieldContent('title', 'Duck Vintage - Premium Vintage Clothing & Accessories'); ?></title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="<?php echo $__env->yieldContent('meta_description', 'Discover premium vintage clothing and accessories at Duck Vintage. Unique pieces from different eras, curated for the modern soul.'); ?>">
+    <meta name="keywords" content="vintage clothing, retro fashion, vintage store, second-hand clothing, sustainable fashion, vintage accessories">
+    <meta name="author" content="Duck Vintage">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo e(url()->current()); ?>">
+    <meta property="og:title" content="<?php echo $__env->yieldContent('title', 'Duck Vintage - Premium Vintage Clothing'); ?>">
+    <meta property="og:description" content="<?php echo $__env->yieldContent('meta_description', 'Discover premium vintage clothing and accessories at Duck Vintage.'); ?>">
+    <meta property="og:image" content="<?php echo e(asset('duck_hero_01.png')); ?>">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<?php echo e(url()->current()); ?>">
+    <meta name="twitter:title" content="<?php echo $__env->yieldContent('title', 'Duck Vintage - Premium Vintage Clothing'); ?>">
+    <meta name="twitter:description" content="<?php echo $__env->yieldContent('meta_description', 'Discover premium vintage clothing and accessories.'); ?>">
+    <meta name="twitter:image" content="<?php echo e(asset('duck_hero_01.png')); ?>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="<?php echo e(asset('duck_fav.png')); ?>?v=<?php echo e(time()); ?>">
-    <link rel="shortcut icon" type="image/png" href="<?php echo e(asset('duck_fav.png')); ?>?v=<?php echo e(time()); ?>">
-    <link rel="apple-touch-icon" href="<?php echo e(asset('duck_fav.png')); ?>?v=<?php echo e(time()); ?>">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('duck_fav.png')); ?>">
+    <link rel="shortcut icon" type="image/png" href="<?php echo e(asset('duck_fav.png')); ?>">
+    <link rel="apple-touch-icon" href="<?php echo e(asset('duck_fav.png')); ?>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="<?php echo e(asset('manifest.json')); ?>">
+    <meta name="theme-color" content="#FFD700">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Duck Vintage">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -354,8 +381,65 @@
             </div>
             <p>&copy; <?php echo e(date('Y')); ?> Duck Vintage. All rights reserved.</p>
             <p>Vintage clothing for the modern soul.</p>
+            <div style="margin-top: 1rem;">
+                <a href="<?php echo e(route('privacy-policy')); ?>" style="color: #FFD700; margin: 0 0.5rem;">Privacy Policy</a>
+                <a href="<?php echo e(route('terms-of-service')); ?>" style="color: #FFD700; margin: 0 0.5rem;">Terms of Service</a>
+                <a href="<?php echo e(route('cookie-policy')); ?>" style="color: #FFD700; margin: 0 0.5rem;">Cookie Policy</a>
+            </div>
         </div>
     </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" style="display:none; position:fixed; bottom:0; left:0; right:0; background-color:#1a1a1a; border-top:2px solid #FFD700; padding:1.5rem; z-index:10000; box-shadow:0 -2px 10px rgba(0,0,0,0.5);">
+        <div class="container" style="max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+            <div style="flex:1; min-width:300px;">
+                <p style="margin-bottom:0.5rem; font-weight:bold; color:#FFD700;">🍪 Cookie Notice</p>
+                <p style="margin:0; font-size:0.9rem;">We use cookies to enhance your experience and analyze site traffic. By continuing to browse, you consent to our use of cookies. 
+                <a href="<?php echo e(route('cookie-policy')); ?>" style="color:#FFD700; text-decoration:underline;">Learn more</a></p>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <button onclick="acceptCookies()" class="btn" style="background-color:#28a745; padding:0.75rem 1.5rem; white-space:nowrap;">Accept All</button>
+                <button onclick="declineCookies()" class="btn btn-secondary" style="padding:0.75rem 1.5rem; white-space:nowrap;">Decline Optional</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie consent management
+        function checkCookieConsent() {
+            if (!localStorage.getItem('cookieConsent')) {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieConsent').style.display = 'none';
+            // Here you would enable analytics, marketing cookies, etc.
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieConsent').style.display = 'none';
+            // Only essential cookies remain active
+        }
+
+        // Check on page load
+        window.addEventListener('DOMContentLoaded', checkCookieConsent);
+        
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
