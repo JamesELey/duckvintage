@@ -154,6 +154,18 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        // Get category IDs by slug
+        $tshirtsCategory = Category::where('slug', 't-shirts')->first();
+        $jeansCategory = Category::where('slug', 'jeans')->first();
+        $jacketsCategory = Category::where('slug', 'jackets')->first();
+        $dressesCategory = Category::where('slug', 'dresses')->first();
+
+        // Update category_id in products array
+        $products[0]['category_id'] = $tshirtsCategory->id;
+        $products[1]['category_id'] = $jeansCategory->id;
+        $products[2]['category_id'] = $jacketsCategory->id;
+        $products[3]['category_id'] = $dressesCategory->id;
+
         foreach ($products as $productData) {
             Product::firstOrCreate(
                 ['slug' => $productData['slug']],
