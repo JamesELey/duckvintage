@@ -19,6 +19,10 @@ class Order extends Model
         'tax_amount',
         'shipping_amount',
         'total_amount',
+        'payment_method',
+        'payment_status',
+        'payment_reference',
+        'payment_completed_at',
         'shipping_address',
         'billing_address',
         'notes',
@@ -31,6 +35,7 @@ class Order extends Model
         'tax_amount' => 'decimal:2',
         'shipping_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'payment_completed_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -38,7 +43,7 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function orderItems(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
@@ -48,7 +53,9 @@ class Order extends Model
         parent::boot();
         
         static::creating(function ($order) {
-            $order->order_number = 'DV-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+            if (!$order->order_number) {
+                $order->order_number = 'DV-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+            }
         });
     }
 }

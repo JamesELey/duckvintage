@@ -27,6 +27,16 @@ class CartController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
+        // Check if product is active
+        if (!$product->is_active) {
+            return redirect()->back()->withErrors(['product' => 'This product is not available.']);
+        }
+
+        // Check if product is in stock
+        if ($product->stock_quantity < $request->quantity) {
+            return redirect()->back()->withErrors(['quantity' => 'Not enough stock available. Only ' . $product->stock_quantity . ' items left.']);
+        }
+
         // Check if item already exists in cart
         $existingItem = CartItem::where('user_id', auth()->id())
             ->where('product_id', $request->product_id)

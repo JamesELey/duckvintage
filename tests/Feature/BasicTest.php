@@ -3,9 +3,18 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Category;
+use App\Models\Product;
 
 class BasicTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Seed test data for this test class
+        $this->artisan('db:seed', ['--class' => 'TestSeeder']);
+    }
     /** @test */
     public function home_page_loads_successfully()
     {
@@ -46,8 +55,8 @@ class BasicTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Duck Vintage');
         $response->assertSee('duck_fav.png');
-        $response->assertSee('duck_hero_01.png');
-        $response->assertSee('duck_hero_02.png');
+        $response->assertSee('six_duck_01.png');
+        $response->assertSee('six_duck_02.png');
     }
 
     /** @test */
@@ -59,5 +68,28 @@ class BasicTest extends TestCase
         $response->assertSee('Welcome to Duck Vintage');
         $response->assertSee('Shop by Category');
         $response->assertSee('Featured Products');
+    }
+
+    /** @test */
+    public function home_page_shows_categories()
+    {
+        $response = $this->get('/');
+        
+        $response->assertStatus(200);
+        $response->assertSee('T-Shirts');
+        $response->assertSee('Jeans');
+        $response->assertSee('Jackets');
+        $response->assertSee('Dresses');
+    }
+
+    /** @test */
+    public function home_page_shows_featured_products()
+    {
+        $response = $this->get('/');
+        
+        $response->assertStatus(200);
+        $response->assertSee('Vintage Band T-Shirt');
+        $response->assertSee('Classic Blue Jeans');
+        $response->assertSee('Leather Jacket');
     }
 }

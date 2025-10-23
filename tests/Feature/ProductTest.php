@@ -95,8 +95,8 @@ class ProductTest extends TestCase
             'sku' => 'NEW-001',
             'stock_quantity' => 15,
             'category_id' => $category->id,
-            'sizes' => ['S', 'M', 'L'],
-            'colors' => ['Red', 'Blue'],
+            'sizes' => 'S, M, L',
+            'colors' => 'Red, Blue',
             'is_active' => true,
             'is_featured' => true,
         ];
@@ -143,13 +143,13 @@ class ProductTest extends TestCase
             'sku' => 'UPD-001',
             'stock_quantity' => 20,
             'category_id' => $category->id,
-            'sizes' => ['S', 'M', 'L', 'XL'],
-            'colors' => ['Red', 'Blue', 'Green'],
+            'sizes' => 'S, M, L, XL',
+            'colors' => 'Red, Blue, Green',
             'is_active' => true,
             'is_featured' => false,
         ];
 
-        $response = $this->put("/admin/products/{$product->id}", $updateData);
+        $response = $this->put("/admin/products/{$product->slug}", $updateData);
 
         $response->assertRedirect('/admin/products');
         $this->assertDatabaseHas('products', [
@@ -184,7 +184,7 @@ class ProductTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->delete("/admin/products/{$product->id}");
+        $response = $this->delete("/admin/products/{$product->slug}");
 
         $response->assertRedirect('/admin/products');
         $this->assertDatabaseMissing('products', ['id' => $product->id]);

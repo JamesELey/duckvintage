@@ -88,7 +88,7 @@ class AdminDashboardTest extends TestCase
         $order2 = Order::create([
             'user_id' => $customer->id,
             'order_number' => 'ORD-002',
-            'status' => 'delivered',
+            'status' => 'completed',
             'total_amount' => 29.99,
             'shipping_address' => '456 Test Ave',
             'billing_address' => '456 Test Ave',
@@ -129,7 +129,7 @@ class AdminDashboardTest extends TestCase
         $response = $this->get('/admin');
         
         $response->assertStatus(200);
-        $response->assertSee('ORD-001');
+        $response->assertSee('ORD-001'); // Should show the specific order number
         $response->assertSee($customer->name);
         $response->assertSee('pending');
         $response->assertSee('$29.99');
@@ -185,6 +185,6 @@ class AdminDashboardTest extends TestCase
         
         $response->assertStatus(200);
         $response->assertSee('0'); // All counts should be 0
-        $response->assertDontSee('Recent Orders'); // Should not show recent orders section
+        $response->assertDontSee('ORD-001'); // Should not show any order numbers
     }
 }

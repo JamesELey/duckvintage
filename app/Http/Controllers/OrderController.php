@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = auth()->user()->orders()->with('orderItems.product')->latest()->paginate(10);
+        $orders = auth()->user()->orders()->with('items.product')->latest()->paginate(10);
         return view('orders.index', compact('orders'));
     }
 
@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
         
-        $order->load('orderItems.product');
+        $order->load('items.product');
         return view('orders.show', compact('order'));
     }
 

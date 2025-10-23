@@ -27,7 +27,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'nullable|array',
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         $user = User::create([
@@ -36,9 +36,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        if ($request->has('roles')) {
-            $user->assignRole($request->roles);
-        }
+        $user->assignRole($request->role);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     }
@@ -62,7 +60,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'nullable|array',
+            'role' => 'required|string|exists:roles,name',
         ]);
 
         $user->update([
@@ -74,11 +72,7 @@ class UserController extends Controller
             $user->update(['password' => bcrypt($request->password)]);
         }
 
-        if ($request->has('roles')) {
-            $user->syncRoles($request->roles);
-        } else {
-            $user->syncRoles([]);
-        }
+        $user->syncRoles([$request->role]);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }

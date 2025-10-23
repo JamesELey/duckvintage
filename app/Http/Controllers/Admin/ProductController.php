@@ -32,10 +32,9 @@ class ProductController extends Controller
             'sku' => 'required|string|unique:products,sku',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'sizes' => 'nullable|array',
-            'colors' => 'nullable|array',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sizes' => 'nullable|string',
+            'colors' => 'nullable|string',
         ]);
 
         $product = Product::create([
@@ -47,20 +46,16 @@ class ProductController extends Controller
             'sku' => $request->sku,
             'stock_quantity' => $request->stock_quantity,
             'category_id' => $request->category_id,
-            'sizes' => $request->sizes,
-            'colors' => $request->colors,
+            'sizes' => $request->sizes ? explode(',', $request->sizes) : null,
+            'colors' => $request->colors ? explode(',', $request->colors) : null,
             'is_active' => $request->has('is_active'),
             'is_featured' => $request->has('is_featured'),
         ]);
 
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-            $imagePaths = [];
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = $path;
-            }
-            $product->update(['images' => $imagePaths]);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image' => $path]);
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
@@ -88,10 +83,9 @@ class ProductController extends Controller
             'sku' => 'required|string|unique:products,sku,' . $product->id,
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'sizes' => 'nullable|array',
-            'colors' => 'nullable|array',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sizes' => 'nullable|string',
+            'colors' => 'nullable|string',
         ]);
 
         $product->update([
@@ -103,20 +97,16 @@ class ProductController extends Controller
             'sku' => $request->sku,
             'stock_quantity' => $request->stock_quantity,
             'category_id' => $request->category_id,
-            'sizes' => $request->sizes,
-            'colors' => $request->colors,
+            'sizes' => $request->sizes ? explode(',', $request->sizes) : null,
+            'colors' => $request->colors ? explode(',', $request->colors) : null,
             'is_active' => $request->has('is_active'),
             'is_featured' => $request->has('is_featured'),
         ]);
 
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-            $imagePaths = [];
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = $path;
-            }
-            $product->update(['images' => $imagePaths]);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->update(['image' => $path]);
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');

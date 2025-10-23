@@ -10,7 +10,7 @@
         <div class="grid grid-2" style="gap: 3rem;">
             <!-- Checkout Form -->
             <div>
-                <form method="POST" action="{{ route('orders.store') }}">
+                <form method="POST" action="{{ route('payment.process') }}">
                     @csrf
                     
                     <!-- Shipping Address -->
@@ -92,6 +92,45 @@
                                 <label class="form-label">Country</label>
                                 <input type="text" name="billing_address[country]" value="{{ old('billing_address.country', 'United States') }}" class="form-control" required>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="card-header">
+                            <h3>Payment Method</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Select Payment Method *</label>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 1px solid #333; border-radius: 4px; cursor: pointer;">
+                                    <input type="radio" name="payment_method" value="stripe" {{ old('payment_method', 'stripe') === 'stripe' ? 'checked' : '' }} required>
+                                    <div>
+                                        <strong>Credit/Debit Card (Stripe)</strong>
+                                        <p style="margin: 0; color: #ccc; font-size: 0.9rem;">Pay securely with your credit or debit card</p>
+                                    </div>
+                                </label>
+                                
+                                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 1px solid #333; border-radius: 4px; cursor: pointer;">
+                                    <input type="radio" name="payment_method" value="paypal" {{ old('payment_method') === 'paypal' ? 'checked' : '' }}>
+                                    <div>
+                                        <strong>PayPal</strong>
+                                        <p style="margin: 0; color: #ccc; font-size: 0.9rem;">Pay with your PayPal account</p>
+                                    </div>
+                                </label>
+                                
+                                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 1px solid #333; border-radius: 4px; cursor: pointer;">
+                                    <input type="radio" name="payment_method" value="cash_on_delivery" {{ old('payment_method') === 'cash_on_delivery' ? 'checked' : '' }}>
+                                    <div>
+                                        <strong>Cash on Delivery</strong>
+                                        <p style="margin: 0; color: #ccc; font-size: 0.9rem;">Pay when your order is delivered</p>
+                                    </div>
+                                </label>
+                            </div>
+                            @error('payment_method')
+                                <div class="alert alert-error">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 

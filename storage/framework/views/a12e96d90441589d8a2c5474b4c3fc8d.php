@@ -5,7 +5,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="hero-section" style="position: relative; height: 70vh; overflow: hidden; margin-bottom: 3rem;">
     <!-- Hero Image 1 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('duck_hero_01.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 8s infinite;">
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('six_duck_01.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite;">
         <div class="container" style="text-align: center; z-index: 2;">
             <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Welcome to Duck Vintage</h1>
             <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Discover timeless vintage clothing for the modern soul</p>
@@ -14,7 +14,7 @@
     </div>
     
     <!-- Hero Image 2 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('duck_hero_02.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 8s infinite 4s;">
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('six_duck_02.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 3s;">
         <div class="container" style="text-align: center; z-index: 2;">
             <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Quality Vintage Finds</h1>
             <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Curated collection of authentic vintage pieces</p>
@@ -22,11 +22,33 @@
         </div>
     </div>
     
+    <!-- Hero Image 3 -->
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('six_duck_03.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 6s;">
+        <div class="container" style="text-align: center; z-index: 2;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Authentic Vintage Style</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Experience the charm of classic fashion</p>
+            <a href="<?php echo e(route('products.index')); ?>" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">Discover More</a>
+        </div>
+    </div>
+    
+    <!-- Hero Image 4 -->
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?php echo e(asset('six_duck_04.png')); ?>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 9s;">
+        <div class="container" style="text-align: center; z-index: 2;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Timeless Fashion</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Where vintage meets modern elegance</p>
+            <a href="<?php echo e(route('products.index')); ?>" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">Shop Vintage</a>
+        </div>
+    </div>
+    
     <!-- CSS Animation -->
     <style>
         @keyframes fadeInOut {
-            0%, 50% { opacity: 1; }
-            50%, 100% { opacity: 0; }
+            0%, 20% { opacity: 1; }
+            25%, 100% { opacity: 0; }
+        }
+        
+        .hero-slide {
+            opacity: 0;
         }
     </style>
 </div>

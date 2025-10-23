@@ -97,7 +97,7 @@ class CategoryTest extends TestCase
             'is_active' => false,
         ];
 
-        $response = $this->put("/admin/categories/{$category->id}", $updateData);
+        $response = $this->put("/admin/categories/{$category->slug}", $updateData);
 
         $response->assertRedirect('/admin/categories');
         $this->assertDatabaseHas('categories', [
@@ -122,7 +122,7 @@ class CategoryTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->delete("/admin/categories/{$category->id}");
+        $response = $this->delete("/admin/categories/{$category->slug}");
 
         $response->assertRedirect('/admin/categories');
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);

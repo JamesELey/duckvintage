@@ -347,6 +347,9 @@
 
     <footer class="footer">
         <div class="container">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                <img src="{{ asset('duck_footer.png') }}" alt="Duck Vintage Footer" style="height: 48px; width: auto;">
+            </div>
             <p>&copy; {{ date('Y') }} Duck Vintage. All rights reserved.</p>
             <p>Vintage clothing for the modern soul.</p>
         </div>
