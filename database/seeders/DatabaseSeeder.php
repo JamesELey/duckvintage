@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create roles and permissions
-        $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        $customerRole = Role::create(['name' => 'customer', 'guard_name' => 'web']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $customerRole = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
 
         // Create permissions
-        Permission::create(['name' => 'manage products', 'guard_name' => 'web']);
-        Permission::create(['name' => 'manage categories', 'guard_name' => 'web']);
-        Permission::create(['name' => 'manage orders', 'guard_name' => 'web']);
-        Permission::create(['name' => 'manage users', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'manage products', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'manage categories', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'manage orders', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'manage users', 'guard_name' => 'web']);
 
         // Assign permissions to admin role
         $adminRole->givePermissionTo([
@@ -36,20 +36,30 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create admin user
-        $admin = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@duckvintage.com',
-            'password' => Hash::make('password'),
-        ]);
-        $admin->assignRole('admin');
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@duckvintage.com'],
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('admin123'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
 
         // Create sample customer
-        $customer = User::create([
-            'name' => 'John Doe',
-            'email' => 'customer@example.com',
-            'password' => Hash::make('password'),
-        ]);
-        $customer->assignRole('customer');
+        $customer = User::firstOrCreate(
+            ['email' => 'customer@example.com'],
+            [
+                'name' => 'John Doe',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+        if (!$customer->hasRole('customer')) {
+            $customer->assignRole('customer');
+        }
 
         // Create categories
         $categories = [
@@ -80,7 +90,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($categories as $categoryData) {
-            Category::create($categoryData);
+            Category::firstOrCreate(
+                ['slug' => $categoryData['slug']],
+                $categoryData
+            );
         }
 
         // Create sample products
@@ -142,7 +155,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($products as $productData) {
-            Product::create($productData);
+            Product::firstOrCreate(
+                ['slug' => $productData['slug']],
+                $productData
+            );
         }
     }
 }
