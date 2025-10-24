@@ -326,6 +326,7 @@
                 <nav class="nav">
                     <a href="<?php echo e(route('home')); ?>">Home</a>
                     <a href="<?php echo e(route('products.index')); ?>">Products</a>
+                    <a href="<?php echo e(route('blog.index')); ?>">Blog</a>
                     
                     <?php if(auth()->guard()->check()): ?>
                         <a href="<?php echo e(route('cart.index')); ?>" class="cart-icon">

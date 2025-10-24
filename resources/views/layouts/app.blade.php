@@ -326,6 +326,7 @@
                 <nav class="nav">
                     <a href="{{ route('home') }}">Home</a>
                     <a href="{{ route('products.index') }}">Products</a>
+                    <a href="{{ route('blog.index') }}">Blog</a>
                     
                     @auth
                         <a href="{{ route('cart.index') }}" class="cart-icon">

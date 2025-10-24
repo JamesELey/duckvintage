@@ -57,6 +57,14 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         'destroy' => 'admin.users.destroy'
     ]);
     Route::patch('users/{user}/reset-password', [App\Http\Controllers\Admin\UserController::class, 'resetPassword'])->name('admin.users.reset-password');
+    
+    // Blog Management
+    Route::get('blog', [App\Http\Controllers\Admin\BlogController::class, 'index'])->name('admin.blog.index');
+    Route::get('blog/create', [App\Http\Controllers\Admin\BlogController::class, 'create'])->name('admin.blog.create');
+    Route::post('blog', [App\Http\Controllers\Admin\BlogController::class, 'store'])->name('admin.blog.store');
+    Route::get('blog/{id}/edit', [App\Http\Controllers\Admin\BlogController::class, 'edit'])->name('admin.blog.edit');
+    Route::patch('blog/{id}', [App\Http\Controllers\Admin\BlogController::class, 'update'])->name('admin.blog.update');
+    Route::delete('blog/{id}', [App\Http\Controllers\Admin\BlogController::class, 'destroy'])->name('admin.blog.destroy');
 });
 
 // Customer Routes
@@ -91,6 +99,10 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 Route::get('/categories/{category}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+
+// Blog Routes
+Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 Auth::routes();
 
