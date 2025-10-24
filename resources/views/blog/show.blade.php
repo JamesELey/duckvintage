@@ -122,7 +122,7 @@
   "@type": "BlogPosting",
   "headline": "{{ addslashes($blog->title) }}",
   "description": "{{ addslashes($blog->meta_description ?? $blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->content), 160)) }}",
-  "image": "{{ $blog->featured_image ?? asset('fm_duck_01.png') }}",
+  "image": "{{ $blog->featured_image ?? asset('fm_duck_02.png') }}",
   "author": {
     "@type": "Person",
     "name": "{{ $blog->author->name }}"

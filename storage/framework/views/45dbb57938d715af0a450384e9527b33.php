@@ -18,14 +18,14 @@
         <meta property="og:url" content="<?php echo e(url()->current()); ?>">
         <meta property="og:title" content="<?php echo $__env->yieldContent('title', 'Duck Vintage - Premium Vintage Clothing'); ?>">
         <meta property="og:description" content="<?php echo $__env->yieldContent('meta_description', 'Discover premium vintage clothing and accessories at Duck Vintage.'); ?>">
-        <meta property="og:image" content="<?php echo e(asset('fm_duck_01.png')); ?>">
+        <meta property="og:image" content="<?php echo e(asset('fm_duck_02.png')); ?>">
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:url" content="<?php echo e(url()->current()); ?>">
         <meta name="twitter:title" content="<?php echo $__env->yieldContent('title', 'Duck Vintage - Premium Vintage Clothing'); ?>">
         <meta name="twitter:description" content="<?php echo $__env->yieldContent('meta_description', 'Discover premium vintage clothing and accessories.'); ?>">
-        <meta name="twitter:image" content="<?php echo e(asset('fm_duck_01.png')); ?>">
+        <meta name="twitter:image" content="<?php echo e(asset('fm_duck_02.png')); ?>">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?php echo e(asset('duck_fav.png')); ?>">

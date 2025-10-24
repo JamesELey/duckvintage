@@ -55,8 +55,8 @@ class BasicTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Duck Vintage');
         $response->assertSee('duck_fav.png');
-        $response->assertSee('fm_duck_01.png');
         $response->assertSee('fm_duck_02.png');
+        $response->assertSee('fm_duck_05.png');
     }
 
     /** @test */
