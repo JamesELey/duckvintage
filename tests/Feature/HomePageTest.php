@@ -95,8 +95,9 @@ class HomePageTest extends TestCase
         $response = $this->get('/');
         
         $response->assertStatus(200);
-        $response->assertSee('six_duck_01.png');
-        $response->assertSee('six_duck_02.png');
+        $response->assertSee('fm_duck_01.png');
+        $response->assertSee('fm_duck_02.png');
+        $response->assertSee('fm_duck_03.png');
         $response->assertSee('Welcome to Duck Vintage');
         $response->assertSee('Quality Vintage Finds');
     }

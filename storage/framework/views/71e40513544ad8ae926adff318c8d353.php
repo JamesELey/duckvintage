@@ -126,7 +126,7 @@
   "@type": "BlogPosting",
   "headline": "<?php echo e(addslashes($blog->title)); ?>",
   "description": "<?php echo e(addslashes($blog->meta_description ?? $blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->content), 160))); ?>",
-  "image": "<?php echo e($blog->featured_image ?? asset('duck_hero_01.png')); ?>",
+  "image": "<?php echo e($blog->featured_image ?? asset('fm_duck_01.png')); ?>",
   "author": {
     "@type": "Person",
     "name": "<?php echo e($blog->author->name); ?>"

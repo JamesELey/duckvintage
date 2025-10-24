@@ -5,7 +5,7 @@
 @section('content')
 <div class="hero-section" style="position: relative; height: 70vh; overflow: hidden; margin-bottom: 3rem;">
     <!-- Hero Image 1 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('six_duck_01.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite;">
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('fm_duck_01.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 9s infinite;">
         <div class="container" style="text-align: center; z-index: 2;">
             <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Welcome to Duck Vintage</h1>
             <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Discover timeless vintage clothing for the modern soul</p>
@@ -14,7 +14,7 @@
     </div>
     
     <!-- Hero Image 2 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('six_duck_02.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 3s;">
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('fm_duck_02.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 9s infinite 3s;">
         <div class="container" style="text-align: center; z-index: 2;">
             <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Quality Vintage Finds</h1>
             <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Curated collection of authentic vintage pieces</p>
@@ -23,7 +23,7 @@
     </div>
     
     <!-- Hero Image 3 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('six_duck_03.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 6s;">
+    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('fm_duck_03.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 9s infinite 6s;">
         <div class="container" style="text-align: center; z-index: 2;">
             <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Authentic Vintage Style</h1>
             <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Experience the charm of classic fashion</p>
@@ -31,20 +31,11 @@
         </div>
     </div>
     
-    <!-- Hero Image 4 -->
-    <div class="hero-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ asset('six_duck_04.png') }}'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; animation: fadeInOut 12s infinite 9s;">
-        <div class="container" style="text-align: center; z-index: 2;">
-            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Timeless Fashion</h1>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #FFF; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Where vintage meets modern elegance</p>
-            <a href="{{ route('products.index') }}" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">Shop Vintage</a>
-        </div>
-    </div>
-    
     <!-- CSS Animation -->
     <style>
         @keyframes fadeInOut {
-            0%, 20% { opacity: 1; }
-            25%, 100% { opacity: 0; }
+            0%, 30% { opacity: 1; }
+            33%, 100% { opacity: 0; }
         }
         
         .hero-slide {
