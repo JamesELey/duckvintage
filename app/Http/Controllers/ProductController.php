@@ -41,6 +41,9 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        // Eager load reviews with user for better performance
+        $product->load(['reviews.user']);
+        
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)

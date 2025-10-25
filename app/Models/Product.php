@@ -52,6 +52,11 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
@@ -68,6 +73,46 @@ class Product extends Model
             return round((($this->price - $this->sale_price) / $this->price) * 100);
         }
         return 0;
+    }
+
+    /**
+     * Get average rating out of 10 (bread slices).
+     */
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    /**
+     * Get total review count.
+     */
+    public function getReviewCountAttribute()
+    {
+        return $this->reviews()->count();
+    }
+
+    /**
+     * Get bread slices display for average rating.
+     */
+    public function getBreadSlicesAttribute(): string
+    {
+        $rating = round($this->average_rating);
+        $fullSlices = $rating;
+        $emptySlices = 10 - $fullSlices;
+        
+        $html = '';
+        
+        // Full bread slices
+        for ($i = 0; $i < $fullSlices; $i++) {
+            $html .= '<span style="color: #FFD700; font-size: 1.2rem;">🍞</span>';
+        }
+        
+        // Empty bread slices (lighter)
+        for ($i = 0; $i < $emptySlices; $i++) {
+            $html .= '<span style="color: #444; font-size: 1.2rem; opacity: 0.3;">🍞</span>';
+        }
+        
+        return $html;
     }
 }
 
