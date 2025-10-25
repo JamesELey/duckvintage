@@ -13,6 +13,8 @@ class Review extends Model
     protected $fillable = [
         'product_id',
         'user_id',
+        'name',
+        'email',
         'rating',
         'title',
         'comment',
@@ -38,6 +40,14 @@ class Review extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the reviewer name (user name or guest name).
+     */
+    public function getReviewerNameAttribute(): string
+    {
+        return $this->user ? $this->user->name : $this->name;
     }
 
     /**

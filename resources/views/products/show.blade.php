@@ -115,69 +115,93 @@
         </div>
 
         <!-- Write a Review Form -->
-        @auth
-            @php
+        @php
+            $userReview = null;
+            if (auth()->check()) {
                 $userReview = $product->reviews()->where('user_id', auth()->id())->first();
-            @endphp
-            
-            @if(!$userReview)
-                <div class="card" style="margin-bottom: 3rem;">
-                    <div class="card-header">
-                        <h3>Write a Review 🍞</h3>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('reviews.store', $product) }}">
-                            @csrf
+            }
+        @endphp
+        
+        @if(!$userReview)
+            <div class="card" style="margin-bottom: 3rem;">
+                <div class="card-header">
+                    <h3>Write a Review 🍞</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('reviews.store', $product) }}">
+                        @csrf
+                        
+                        @guest
+                            <div class="form-group">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+                                @error('name')
+                                    <div class="alert alert-error">{{ $message }}</div>
+                                @enderror
+                            </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Rating (Bread Slices out of 10) *</label>
-                                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
-                                    @for($i = 1; $i <= 10; $i++)
-                                        <label style="cursor: pointer; font-size: 2rem;">
-                                            <input type="radio" name="rating" value="{{ $i }}" required style="display: none;" onchange="updateBreadPreview({{ $i }})">
-                                            <span class="bread-slice" data-value="{{ $i }}" style="opacity: 0.3; transition: opacity 0.2s;">🍞</span>
-                                        </label>
-                                    @endfor
-                                </div>
-                                <div id="ratingText" style="color: #FFD700; margin-top: 0.5rem; font-weight: bold;"></div>
-                                @error('rating')
+                                <label class="form-label">Your Email *</label>
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                                @error('email')
                                     <div class="alert alert-error">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                        @else
                             <div class="form-group">
-                                <label class="form-label">Review Title (optional)</label>
-                                <input type="text" name="title" class="form-control" placeholder="Sum up your experience">
-                                @error('title')
-                                    <div class="alert alert-error">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}" readonly style="background-color: #333; color: #999;">
+                                <small style="color: #999;">Using your account name</small>
                             </div>
-
+                            
                             <div class="form-group">
-                                <label class="form-label">Your Review (optional)</label>
-                                <textarea name="comment" class="form-control" rows="5" placeholder="Share your thoughts about this product..."></textarea>
-                                @error('comment')
-                                    <div class="alert alert-error">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">Your Email</label>
+                                <input type="email" name="email" class="form-control" value="{{ auth()->user()->email }}" readonly style="background-color: #333; color: #999;">
+                                <small style="color: #999;">Using your account email</small>
                             </div>
+                        @endguest
+                        
+                        <div class="form-group">
+                            <label class="form-label">Rating (Bread Slices out of 10) *</label>
+                            <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
+                                @for($i = 1; $i <= 10; $i++)
+                                    <label style="cursor: pointer; font-size: 2rem;">
+                                        <input type="radio" name="rating" value="{{ $i }}" required style="display: none;" onchange="updateBreadPreview({{ $i }})">
+                                        <span class="bread-slice" data-value="{{ $i }}" style="opacity: 0.3; transition: opacity 0.2s;">🍞</span>
+                                    </label>
+                                @endfor
+                            </div>
+                            <div id="ratingText" style="color: #FFD700; margin-top: 0.5rem; font-weight: bold;"></div>
+                            @error('rating')
+                                <div class="alert alert-error">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                            <button type="submit" class="btn">Submit Review</button>
-                        </form>
-                    </div>
-                </div>
-            @else
-                <div style="background-color: #1a4d1a; border: 1px solid #2d7a2d; color: #90EE90; padding: 1rem; border-radius: 4px; margin-bottom: 3rem;">
-                    <strong>You've already reviewed this product!</strong> Your feedback helps others make better decisions. 🍞
-                </div>
-            @endif
-        @else
-            <div class="card" style="margin-bottom: 3rem;">
-                <div class="card-body" style="text-align: center;">
-                    <p style="margin-bottom: 1rem;">Want to leave a review?</p>
-                    <a href="{{ route('login') }}" class="btn">Login to Review</a>
+                        <div class="form-group">
+                            <label class="form-label">Review Title (optional)</label>
+                            <input type="text" name="title" class="form-control" placeholder="Sum up your experience">
+                            @error('title')
+                                <div class="alert alert-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Your Review (optional)</label>
+                            <textarea name="comment" class="form-control" rows="5" placeholder="Share your thoughts about this product..."></textarea>
+                            @error('comment')
+                                <div class="alert alert-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
                 </div>
             </div>
-        @endauth
+        @else
+            <div style="background-color: #1a4d1a; border: 1px solid #2d7a2d; color: #90EE90; padding: 1rem; border-radius: 4px; margin-bottom: 3rem;">
+                <strong>You've already reviewed this product!</strong> Your feedback helps others make better decisions. 🍞
+            </div>
+        @endif
 
         <!-- Display Reviews -->
         @if($product->reviews->count() > 0)
@@ -189,7 +213,7 @@
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                                        <strong>{{ $review->user->name }}</strong>
+                                        <strong>{{ $review->reviewer_name }}</strong>
                                         @if($review->is_verified_purchase)
                                             <span style="background-color: #1a4d1a; color: #90EE90; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem;">✓ Verified Purchase</span>
                                         @endif

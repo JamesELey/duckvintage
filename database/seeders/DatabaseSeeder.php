@@ -172,6 +172,9 @@ class DatabaseSeeder extends Seeder
                 $productData
             );
         }
+
+        // Seed reviews
+        $this->call(ReviewSeeder::class);
     }
 }
 

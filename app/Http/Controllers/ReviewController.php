@@ -15,30 +15,45 @@ class ReviewController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:10',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
             'title' => 'nullable|string|max:255',
             'comment' => 'nullable|string',
         ]);
 
-        // Check if user already reviewed this product
-        $existingReview = Review::where('product_id', $product->id)
-            ->where('user_id', auth()->id())
-            ->first();
-
-        if ($existingReview) {
-            return back()->withErrors(['review' => 'You have already reviewed this product.']);
+        // For logged-in users, use their email if not provided
+        $email = $request->email;
+        if (auth()->check() && !$email) {
+            $email = auth()->user()->email;
         }
 
-        // Check if user has purchased this product
-        $hasPurchased = auth()->user()->orders()
-            ->whereHas('items', function($query) use ($product) {
-                $query->where('product_id', $product->id);
-            })
-            ->where('status', 'completed')
-            ->exists();
+        // Check if email already reviewed this product
+        if ($email) {
+            $existingReview = Review::where('product_id', $product->id)
+                ->where('email', $email)
+                ->first();
+
+            if ($existingReview) {
+                return back()->withErrors(['review' => 'This email has already reviewed this product.']);
+            }
+        }
+
+        // Check if user is logged in and has purchased this product
+        $hasPurchased = false;
+        if (auth()->check()) {
+            $hasPurchased = auth()->user()->orders()
+                ->whereHas('items', function($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })
+                ->where('status', 'completed')
+                ->exists();
+        }
 
         Review::create([
             'product_id' => $product->id,
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id(), // null for guests
+            'name' => $request->name,
+            'email' => $email,
             'rating' => $request->rating,
             'title' => $request->title,
             'comment' => $request->comment,

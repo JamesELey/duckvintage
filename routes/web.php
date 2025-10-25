@@ -94,8 +94,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
     
-    // Reviews (Bread Slices 🍞 out of 10)
-    Route::post('/products/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    // Authenticated review management
     Route::patch('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
@@ -104,6 +103,9 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 Route::get('/categories/{category}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+
+// Reviews (Bread Slices 🍞 out of 10) - Guest accessible
+Route::post('/products/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 
 // Blog Routes
 Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
