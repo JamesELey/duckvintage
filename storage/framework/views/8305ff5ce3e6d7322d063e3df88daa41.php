@@ -107,9 +107,22 @@
                 <div style="flex: 1;">
                     <div style="margin-bottom: 0.5rem;"><?php echo $product->bread_slices; ?></div>
                     <div style="color: #999;"><?php echo e($product->review_count); ?> <?php echo e(Str::plural('review', $product->review_count)); ?></div>
-                    <?php if($product->review_count >= 5): ?>
-                        <div style="color: #FFD700; margin-top: 0.5rem;">🍞 That's <?php echo e($product->review_count >= 10 ? 'a full loaf' : 'more than half a loaf'); ?> of reviews!</div>
-                    <?php endif; ?>
+                    <?php
+                        $avgRating = round($product->average_rating);
+                        $loafDescription = '';
+                        if ($avgRating >= 9) {
+                            $loafDescription = 'Almost a Full Loaf! 🍞';
+                        } elseif ($avgRating >= 7) {
+                            $loafDescription = 'More than Half a Loaf! 🍞';
+                        } elseif ($avgRating == 5) {
+                            $loafDescription = 'Half a Loaf 🍞';
+                        } elseif ($avgRating >= 3) {
+                            $loafDescription = 'A Few Slices 🍞';
+                        } else {
+                            $loafDescription = 'Just Crumbs 🍞';
+                        }
+                    ?>
+                    <div style="color: #FFD700; margin-top: 0.5rem;"><?php echo e($loafDescription); ?></div>
                 </div>
             </div>
         </div>
@@ -342,19 +355,19 @@ function updateBreadPreview(rating) {
         slice.style.opacity = value <= rating ? '1' : '0.3';
     });
     
-    // Update rating text
-    const descriptions = {
-        1: '1/10 slices - Just Crumbs 😞',
-        2: '2/10 slices - A Bit Stale',
-        3: '3/10 slices - A Few Slices',
-        4: '4/10 slices - Getting Better',
-        5: '5/10 slices - Half a Loaf 🍞',
-        6: '6/10 slices - More than Half!',
-        7: '7/10 slices - Pretty Good!',
-        8: '8/10 slices - Really Fresh!',
-        9: '9/10 slices - Almost a Full Loaf! 🍞🍞',
-        10: '10/10 slices - FULL LOAF! Perfect! 🍞🍞🍞'
-    };
+        // Update rating text with loaf descriptions
+        const descriptions = {
+            1: '1/10 slices - Just Crumbs 🍞',
+            2: '2/10 slices - A Few Crumbs 🍞',
+            3: '3/10 slices - A Few Slices 🍞',
+            4: '4/10 slices - Getting Better 🍞',
+            5: '5/10 slices - Half a Loaf 🍞',
+            6: '6/10 slices - More than Half! 🍞',
+            7: '7/10 slices - Pretty Good Loaf! 🍞',
+            8: '8/10 slices - Really Fresh Loaf! 🍞',
+            9: '9/10 slices - Almost a Full Loaf! 🍞',
+            10: '10/10 slices - FULL LOAF! Perfect! 🍞'
+        };
     
     ratingText.textContent = descriptions[rating];
 }

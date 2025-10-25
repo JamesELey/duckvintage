@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /storage/
+Disallow: /bootstrap/cache/
+
+# Allow important pages
+Allow: /products
+Allow: /blog
+Allow: /categories
+
+# Sitemap
+Sitemap: https://www.duckvintage.com/sitemap.xml

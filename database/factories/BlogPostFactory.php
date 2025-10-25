@@ -14,27 +14,33 @@ class BlogPostFactory extends Factory
     public function definition(): array
     {
         $title = $this->faker->sentence(6);
-        $content = $this->faker->paragraphs(5, true);
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+        while (BlogPost::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+        
+        $isPublished = $this->faker->boolean(80);
         
         return [
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . $this->faker->unique()->numberBetween(1, 10000),
-            'excerpt' => $this->faker->paragraph(),
-            'content' => $content,
-            'meta_title' => $title,
-            'meta_description' => $this->faker->sentence(15),
+            'slug' => $slug,
+            'content' => $this->faker->paragraphs(rand(5, 15), true),
+            'image' => $this->faker->imageUrl(800, 400, 'fashion', true),
+            'user_id' => User::factory(),
+            'is_published' => $isPublished,
+            'published_at' => $isPublished ? $this->faker->dateTimeBetween('-1 year', 'now') : null,
+            'meta_title' => $this->faker->sentence(8),
+            'meta_description' => $this->faker->paragraph(3),
             'meta_keywords' => implode(', ', $this->faker->words(5)),
-            'author_id' => User::factory(),
-            'status' => $this->faker->randomElement(['draft', 'published']),
-            'published_at' => $this->faker->optional(0.7)->dateTimeBetween('-1 year', 'now'),
-            'views' => $this->faker->numberBetween(0, 1000),
         ];
     }
 
     public function published()
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'published',
+            'is_published' => true,
             'published_at' => now()->subDays(rand(1, 30)),
         ]);
     }
@@ -42,7 +48,7 @@ class BlogPostFactory extends Factory
     public function draft()
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'draft',
+            'is_published' => false,
             'published_at' => null,
         ]);
     }
