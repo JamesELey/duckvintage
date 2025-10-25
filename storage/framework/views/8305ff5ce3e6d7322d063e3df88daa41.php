@@ -93,6 +93,203 @@
         </div>
     </div>
 
+    <!-- Reviews Section (Bread Slices System 🍞) -->
+    <div style="margin-top: 4rem; padding-top: 4rem; border-top: 2px solid #333;">
+        <h2 style="margin-bottom: 2rem;">Customer Reviews</h2>
+        
+        <!-- Average Rating Summary -->
+        <div style="background-color: #1a1a1a; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                <div>
+                    <div style="font-size: 3rem; font-weight: bold; color: #FFD700;"><?php echo e(number_format($product->average_rating, 1)); ?></div>
+                    <div style="color: #999; font-size: 0.9rem;">out of 10 slices</div>
+                </div>
+                <div style="flex: 1;">
+                    <div style="margin-bottom: 0.5rem;"><?php echo $product->bread_slices; ?></div>
+                    <div style="color: #999;"><?php echo e($product->review_count); ?> <?php echo e(Str::plural('review', $product->review_count)); ?></div>
+                    <?php if($product->review_count >= 5): ?>
+                        <div style="color: #FFD700; margin-top: 0.5rem;">🍞 That's <?php echo e($product->review_count >= 10 ? 'a full loaf' : 'more than half a loaf'); ?> of reviews!</div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Write a Review Form -->
+        <?php
+            $userReview = null;
+            if (auth()->check()) {
+                $userReview = $product->reviews()->where('user_id', auth()->id())->first();
+            }
+        ?>
+        
+        <?php if(!$userReview): ?>
+            <div class="card" style="margin-bottom: 3rem;">
+                <div class="card-header">
+                    <h3>Write a Review 🍞</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="<?php echo e(route('reviews.store', $product)); ?>">
+                        <?php echo csrf_field(); ?>
+                        
+                        <?php if(auth()->guard()->guest()): ?>
+                            <div class="form-group">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+                                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="alert alert-error"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Your Email *</label>
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="alert alert-error"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="form-group">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" name="name" class="form-control" value="<?php echo e(auth()->user()->name); ?>" readonly style="background-color: #333; color: #999;">
+                                <small style="color: #999;">Using your account name</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Your Email</label>
+                                <input type="email" name="email" class="form-control" value="<?php echo e(auth()->user()->email); ?>" readonly style="background-color: #333; color: #999;">
+                                <small style="color: #999;">Using your account email</small>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Rating (Bread Slices out of 10) *</label>
+                            <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
+                                <?php for($i = 1; $i <= 10; $i++): ?>
+                                    <label style="cursor: pointer; font-size: 2rem;">
+                                        <input type="radio" name="rating" value="<?php echo e($i); ?>" required style="display: none;" onchange="updateBreadPreview(<?php echo e($i); ?>)">
+                                        <span class="bread-slice" data-value="<?php echo e($i); ?>" style="opacity: 0.3; transition: opacity 0.2s;">🍞</span>
+                                    </label>
+                                <?php endfor; ?>
+                            </div>
+                            <div id="ratingText" style="color: #FFD700; margin-top: 0.5rem; font-weight: bold;"></div>
+                            <?php $__errorArgs = ['rating'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="alert alert-error"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Review Title (optional)</label>
+                            <input type="text" name="title" class="form-control" placeholder="Sum up your experience">
+                            <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="alert alert-error"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Your Review (optional)</label>
+                            <textarea name="comment" class="form-control" rows="5" placeholder="Share your thoughts about this product..."></textarea>
+                            <?php $__errorArgs = ['comment'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="alert alert-error"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        <?php else: ?>
+            <div style="background-color: #1a4d1a; border: 1px solid #2d7a2d; color: #90EE90; padding: 1rem; border-radius: 4px; margin-bottom: 3rem;">
+                <strong>You've already reviewed this product!</strong> Your feedback helps others make better decisions. 🍞
+            </div>
+        <?php endif; ?>
+
+        <!-- Display Reviews -->
+        <?php if($product->reviews->count() > 0): ?>
+            <div style="margin-top: 3rem;">
+                <h3 style="margin-bottom: 2rem;">All Reviews (<?php echo e($product->reviews->count()); ?>)</h3>
+                <?php $__currentLoopData = $product->reviews()->latest()->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                        <strong><?php echo e($review->reviewer_name); ?></strong>
+                                        <?php if($review->is_verified_purchase): ?>
+                                            <span style="background-color: #1a4d1a; color: #90EE90; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem;">✓ Verified Purchase</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <?php echo $review->bread_slices; ?>
+
+                                        <span style="color: #FFD700; margin-left: 0.5rem; font-weight: bold;"><?php echo e($review->rating); ?>/10 slices</span>
+                                    </div>
+                                    <?php if($review->title): ?>
+                                        <h4 style="color: #FFD700; margin-bottom: 0.5rem;"><?php echo e($review->title); ?></h4>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="color: #999; font-size: 0.9rem;"><?php echo e($review->created_at->diffForHumans()); ?></div>
+                                    <?php if(auth()->guard()->check()): ?>
+                                        <?php if($review->user_id === auth()->id() || auth()->user()->hasRole('admin')): ?>
+                                            <form method="POST" action="<?php echo e(route('reviews.destroy', $review)); ?>" style="display: inline; margin-top: 0.5rem;" onsubmit="return confirm('Are you sure you want to delete this review?')">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
+                                                <button type="submit" style="background: none; border: none; color: #FF6B6B; cursor: pointer; font-size: 0.9rem; text-decoration: underline;">Delete</button>
+                                            </form>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php if($review->comment): ?>
+                                <p style="line-height: 1.6; color: #ddd;"><?php echo e($review->comment); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        <?php else: ?>
+            <div style="text-align: center; padding: 3rem; color: #999;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🍞</div>
+                <p>No reviews yet. Be the first to share your thoughts!</p>
+            </div>
+        <?php endif; ?>
+    </div>
+
     <!-- Related Products -->
     <?php if($relatedProducts->count() > 0): ?>
         <div style="margin-top: 4rem;">
@@ -133,6 +330,58 @@
 function changeMainImage(src) {
     document.querySelector('.product-image').src = src;
 }
+
+// Bread slice rating system
+function updateBreadPreview(rating) {
+    const slices = document.querySelectorAll('.bread-slice');
+    const ratingText = document.getElementById('ratingText');
+    
+    // Update slice opacity
+    slices.forEach(slice => {
+        const value = parseInt(slice.getAttribute('data-value'));
+        slice.style.opacity = value <= rating ? '1' : '0.3';
+    });
+    
+    // Update rating text
+    const descriptions = {
+        1: '1/10 slices - Just Crumbs 😞',
+        2: '2/10 slices - A Bit Stale',
+        3: '3/10 slices - A Few Slices',
+        4: '4/10 slices - Getting Better',
+        5: '5/10 slices - Half a Loaf 🍞',
+        6: '6/10 slices - More than Half!',
+        7: '7/10 slices - Pretty Good!',
+        8: '8/10 slices - Really Fresh!',
+        9: '9/10 slices - Almost a Full Loaf! 🍞🍞',
+        10: '10/10 slices - FULL LOAF! Perfect! 🍞🍞🍞'
+    };
+    
+    ratingText.textContent = descriptions[rating];
+}
+
+// Hover effect for bread slices
+document.addEventListener('DOMContentLoaded', function() {
+    const slices = document.querySelectorAll('.bread-slice');
+    
+    slices.forEach((slice, index) => {
+        slice.addEventListener('mouseenter', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            slices.forEach(s => {
+                const sValue = parseInt(s.getAttribute('data-value'));
+                s.style.opacity = sValue <= value ? '1' : '0.3';
+            });
+        });
+        
+        slice.parentElement.addEventListener('mouseleave', function() {
+            const checked = document.querySelector('input[name="rating"]:checked');
+            if (checked) {
+                updateBreadPreview(parseInt(checked.value));
+            } else {
+                slices.forEach(s => s.style.opacity = '0.3');
+            }
+        });
+    });
+});
 </script>
 <?php $__env->stopSection(); ?>
 

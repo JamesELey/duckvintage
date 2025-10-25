@@ -102,17 +102,31 @@ class Product extends Model
         
         $html = '';
         
-        // Full bread slices
+        // Individual bread slices
         for ($i = 0; $i < $fullSlices; $i++) {
-            $html .= '<span style="color: #FFD700; font-size: 1.2rem;">🍞</span>';
+            $html .= '<span style="color: #FFD700; font-size: 1.2rem; margin-right: 2px;">🍞</span>';
         }
         
         // Empty bread slices (lighter)
         for ($i = 0; $i < $emptySlices; $i++) {
-            $html .= '<span style="color: #444; font-size: 1.2rem; opacity: 0.3;">🍞</span>';
+            $html .= '<span style="color: #444; font-size: 1.2rem; opacity: 0.3; margin-right: 2px;">🍞</span>';
         }
         
+        // Add the loaf representation
+        $loafSize = $this->getLoafSize();
+        $html .= '<span style="margin-left: 10px; font-size: ' . $loafSize . 'rem;">🍞</span>';
+        
         return $html;
+    }
+
+    /**
+     * Get loaf size based on average rating (0.5rem to 2rem).
+     */
+    public function getLoafSize(): float
+    {
+        $rating = round($this->average_rating);
+        // Scale from 0.5rem (1 slice) to 2rem (10 slices)
+        return 0.5 + (($rating - 1) / 9) * 1.5;
     }
 }
 
